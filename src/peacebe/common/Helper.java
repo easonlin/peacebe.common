@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Base64;
+import android.util.Log;
 
 public class Helper {
 	public static class URLPair {
@@ -67,12 +68,14 @@ public class Helper {
 		 bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY, byteArrayBitmapStream);
 		 byte[] b = byteArrayBitmapStream.toByteArray();
 		 encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+		 Log.i("bitmap","[ENCODE]" + encodedImage);
 		 return encodedImage;
 	}
 	public static Bitmap getBitmapFromString(String stringPicture) {
 		/*
 		* This Function converts the String back to Bitmap
 		* */
+		Log.i("bitmap","[ENCODE LOAD]" + stringPicture);
 		byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
 		Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 		return decodedByte;

@@ -11,12 +11,17 @@ public class FakePeaceBeServer extends PeaceBeServer {
 	private int mIndex=0;
 	private String mStringBitmap;
 	private int mVote;
+	private String mStringProfileBitmap;
 	public FakePeaceBeServer(){
 		mProcesses = new JSONArray();
 		JSONObject map = new JSONObject();
 		try {
 			map.put("app", "main");
     		map.put("state", "stop");
+    		mProcesses.put(map);
+    		map = new JSONObject();
+    		map.put("app", "profiling");
+    		map.put("state", "profiling");
     		mProcesses.put(map);
     		map = new JSONObject();
     		map.put("app", "grouping");
@@ -68,7 +73,7 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		try {
 			m.put("id", mVote);
     		m.put("name", "jack");
-    		m.put("photo", Helper.getBitmapFromString(mStringBitmap));
+    		m.put("photo", mStringProfileBitmap);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,6 +112,9 @@ public class FakePeaceBeServer extends PeaceBeServer {
 			e.printStackTrace();
 		}
 		return candidate;
+	}
+	public void sendProfile(Bitmap bitmap) {
+		mStringProfileBitmap = Helper.getStringFromBitmap(bitmap);
 	}
 	public void sendPaint(Bitmap bitmap) {
 		// TODO Auto-generated method stub

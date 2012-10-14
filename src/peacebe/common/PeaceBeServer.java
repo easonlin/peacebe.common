@@ -48,6 +48,18 @@ public class PeaceBeServer {
 		}
 		Helper.httpPut(mBaseURL+"/app/grouping/player/"+mPlayer+"/paint", content);
 	}
+	public void sendProfile(Bitmap bitmap) {
+		// TODO Auto-generated method stub
+		String stringBitmap = Helper.getStringFromBitmap(bitmap);
+		JSONObject content = new JSONObject();
+		try {
+			content.put("photo", stringBitmap);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Helper.httpPut(mBaseURL+"/app/profiling/player/"+mPlayer+"/photo", content);
+	}
 	public void sendVote(int id) {
 		// TODO Auto-generated method stub
 		JSONObject content = new JSONObject();
