@@ -12,8 +12,8 @@ public class PeaceBeServer {
 	private int mTeam = 1;
 	final private String mBaseURL = "http://175.41.156.14";	
 	public static PeaceBeServer factoryGet(){
-		//return new FakePeaceBeServer();
-		return new PeaceBeServer();
+		return new FakePeaceBeServer();
+		//return new PeaceBeServer();
 	}
 	public void setPlayer(int player){
 		mPlayer = player;
@@ -60,6 +60,44 @@ public class PeaceBeServer {
 		Helper.httpPut(mBaseURL+"/app/grouping/player/"+mPlayer+"/vote", content);		
 	}
 
+	public void StartProfiling() {
+		// TODO Auto-generated method stub
+		JSONObject content = new JSONObject();
+        try {
+        	content.put("app", "profiling");
+        	content.put("state", "start");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Log.i("RUN", "startprofiling");
+        Helper.httpPut(mBaseURL+"/app/main/team/"+mTeam+"/state", content);
+	}
+	public void StartProfilingFinish(){
+		// TODO Auto-generated method stub
+		JSONObject content = new JSONObject();
+        try {
+        	content.put("app", "profiling");
+        	content.put("state", "stop");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+        Helper.httpPut(mBaseURL+"/app/main/team/"+mTeam+"/state", content);
+	}
+	public JSONArray getProfiled() {
+		// TODO Auto-generated method stub
+		JSONObject result = Helper.httpGet(mBaseURL+"/app/profiling/team/"+mTeam+"/photo");
+		JSONArray players = null;
+		try {
+			players = result.getJSONArray("players");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return players;
+	}
 	public void StartGrouping() {
 		// TODO Auto-generated method stub
 		JSONObject content = new JSONObject();

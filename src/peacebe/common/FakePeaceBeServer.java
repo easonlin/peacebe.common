@@ -196,6 +196,67 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		// TODO Auto-generated method stub
 		
 	}
+	public void StartProfiling(){
+		
+	}
+	public void StartProfilingFinish(){
+		
+	}
+	public JSONArray getProfiled(){
+		// TODO Auto-generated method stub
+		boolean [] result = isPaintFake[ctrIsPaintFake];
+		if (ctrIsPaintFake < isPaintFake.length-1)
+		{
+			ctrIsPaintFake++;
+		}
+		JSONArray players = new JSONArray();
+		try {
+		JSONObject m = new JSONObject();
+		m.put("id", 1);
+		m.put("group", "boy");
+		if (result[0]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		m = new JSONObject();
+		m.put("id", 2);
+		m.put("group", "boy");
+		if (result[1]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		m = new JSONObject();
+		m.put("id", 3);
+		m.put("group", "boy");
+		if (result[2]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		m = new JSONObject();
+		m.put("id", 4);
+		m.put("group", "boy");
+		if (result[3]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		m = new JSONObject();
+		m.put("id", 5);
+		m.put("group", "girl");
+		if (result[4]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		m = new JSONObject();
+		m.put("id", 6);
+		m.put("group", "girl");
+		if (result[5]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		m = new JSONObject();
+		m.put("id", 7);
+		m.put("group", "girl");
+		if (result[6]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		m = new JSONObject();
+		m.put("id", 8);
+		m.put("group", "girl");
+		if (result[7]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+		players.put(m);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return players;
+	}
 	public JSONArray getPainted() {
 		// TODO Auto-generated method stub
 		boolean [] result = isPaintFake[ctrIsPaintFake];
