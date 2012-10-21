@@ -8,18 +8,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PeaceBeServer extends FakePeaceBeServer {
-	private int mPlayer = 1;
+	private String mPlayer = "1";
 	private String mTeam = "1";
 	final private String mBaseURL = "http://175.41.156.14";	
 	public static IPeaceBeServer factoryGet(){
-		//return new FakePeaceBeServer();
-		return new PeaceBeServer();
+		return new FakePeaceBeServer();
+		//return new PeaceBeServer();
 	}
 	/* (non-Javadoc)
 	 * @see peacebe.common.IPeaceBeServer#setPlayer(int)
 	 */
 	@Override
-	public void setPlayer(int player){
+	public void setPlayer(String player){
 		mPlayer = player;
 	}
 	/* (non-Javadoc)
@@ -88,7 +88,7 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	 * @see peacebe.common.IPeaceBeServer#sendVote(int)
 	 */
 	@Override
-	public void sendVote(int id) {
+	public void sendVote(String id) {
 		// TODO Auto-generated method stub
 		JSONObject content = new JSONObject();
 		try {

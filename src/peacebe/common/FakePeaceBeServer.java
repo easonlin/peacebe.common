@@ -8,20 +8,119 @@ import android.graphics.Bitmap;
 
 public class FakePeaceBeServer implements IPeaceBeServer {
 	private JSONArray mProcesses;
-	private int mIndex=0;
 	private String mStringBitmap;
-	private int mVote;
+	private String mVote;
 	private String mStringProfileBitmap;
+	private int stateCountBound = 10;
+	private int stateCount = 0;
+	private int ctrState=0;
+	boolean[][] _isPaintFake =
+	{
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{true, false, false, false, false, false, false, false},
+		{true, false, false, false, false, false, false, false},
+		{true, true, false, false, false, false, false, false},
+		{true, true, true, false, false, false, false, false},
+		{true, true, true, true, false, false, false, false},
+		{true, true, true, true, false, false, false, false},
+		{true, true, true, true, false, false, false, false},
+		{true, true, true, true, true, false, false, false},
+		{true, true, true, true, true, true, false, false},
+		{true, true, true, true, true, true, true, false},
+		{true, true, true, true, true, true, true, true},
+	};
+	boolean[][] isProfiledFake =
+	{
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, true, false, false, false, false},
+		{false, false, false, true, false, false, false, false},
+		{false, false, false, true, false, false, true, false},
+		{false, false, false, true, false, true, true, false},
+		{true, false, false, true, false, true, true, false},
+		{true, false, false, true, false, true, true, false},
+		{true, false, false, true, false, true, true, false},
+		{true, true, false, true, false, true, true, false},
+		{true, true, false, true, false, true, true, false},
+		{true, true, false, true, true, true, true, false},
+		{true, true, true, true, true, true, true, false},
+		{true, true, true, true, true, true, true, true},
+	};
+	int ctrIsProfiledFake = 0;
+	boolean[][] isPaintFake =
+	{
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false},
+		{false, false, false, true, false, false, false, false},
+		{false, false, false, true, false, false, false, false},
+		{false, false, false, true, false, false, true, false},
+		{false, false, false, true, false, true, true, false},
+		{true, false, false, true, false, true, true, false},
+		{true, false, false, true, false, true, true, false},
+		{true, false, false, true, false, true, true, false},
+		{true, true, false, true, false, true, true, false},
+		{true, true, false, true, false, true, true, false},
+		{true, true, false, true, true, true, true, false},
+		{true, true, true, true, true, true, true, false},
+		{true, true, true, true, true, true, true, true},
+	};
+	int ctrIsPaintFake = 0;
+	int[][] voteFake =
+	{
+		{-1, -1, -1, -1, -1, -1, -1, -1},
+		{-1, -1, -1, -1, -1, -1, -1, -1},
+		{-1, -1, -1, -1, -1, -1, -1, -1},
+		{-1, -1, -1, -1, -1, -1, -1, -1},
+		{-1, -1, -1, -1, -1, -1, -1, -1},
+		{-1, -1, -1, -1, -1, -1, -1, -1},
+		{-1, -1, -1, 4, -1, 1, -1, -1},
+		{-1, -1, 1, 4, -1, 1, -1, -1},
+		{-1, -1, 1, 4, -1, 1, -1, -1},
+		{-1, -1, 1, 4, -1, 1, 2, 3},
+		{-1, -1, 1, 4, -1, 1, 2, 3},
+		{1, -1, 1, 4, -1, 1, 2, 3},
+		{1, 3, 1, 4, 1, 1, 2, 3}
+	};
+	int ctrVoteFake = 0;
+	int[] voteResultFake = {1, 3, 2, 4, 3, 1, 4, 2};
 	public FakePeaceBeServer(){
 		mProcesses = new JSONArray();
-		JSONObject map = new JSONObject();
+		JSONObject map;
 		try {
+			map = new JSONObject();
 			map.put("app", "main");
     		map.put("state", "stop");
     		mProcesses.put(map);
     		map = new JSONObject();
     		map.put("app", "profiling");
     		map.put("state", "profiling");
+    		mProcesses.put(map);
+    		map = new JSONObject();
+    		map.put("app", "profiling");
+    		map.put("state", "profiling");
+    		mProcesses.put(map);
+    		map = new JSONObject();
+    		map.put("app", "profiling");
+    		map.put("state", "profiling");
+    		mProcesses.put(map);
+			map = new JSONObject();
+			map.put("app", "main");
+    		map.put("state", "stop");
+    		mProcesses.put(map);
+    		map = new JSONObject();
+    		map.put("app", "grouping");
+    		map.put("state", "painting");
     		mProcesses.put(map);
     		map = new JSONObject();
     		map.put("app", "grouping");
@@ -37,7 +136,15 @@ public class FakePeaceBeServer implements IPeaceBeServer {
     		mProcesses.put(map);
     		map = new JSONObject();
     		map.put("app", "grouping");
+    		map.put("state", "voting");
+    		mProcesses.put(map);
+    		map = new JSONObject();
+    		map.put("app", "grouping");
     		map.put("state", "w_voting");
+    		mProcesses.put(map);
+    		map = new JSONObject();
+    		map.put("app", "grouping");
+    		map.put("state", "result");
     		mProcesses.put(map);
     		map = new JSONObject();
     		map.put("app", "grouping");
@@ -47,158 +154,39 @@ public class FakePeaceBeServer implements IPeaceBeServer {
     		map.put("app", "main");
     		map.put("state", "stop");
     		mProcesses.put(map);
-    		map = new JSONObject();
-    		map.put("app", "main");
-    		map.put("state", "stop");
-    		mProcesses.put(map);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	@Override
-	public JSONObject getTeamState(){
-		JSONObject m = new JSONObject();
-		try {
-			m.put("app", "main");
-    		m.put("state", "stop");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+	private void nextState(){
+		stateCount = 0;
+		if (ctrState < mProcesses.length()-1){
+			ctrState ++;
 		}
-		return m;
 	}
 	@Override
-	public JSONObject getGroupingResult() {
-		// TODO Auto-generated method stub
-		JSONObject m = new JSONObject();
-		try {
-			m.put("id", mVote);
-    		m.put("name", "jack");
-    		m.put("photo", mStringProfileBitmap);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return m;
-	}
-	@Override
-	public void sendVote(int id) {
+	public void sendVote(String id) {
 		// TODO Auto-generated method stub
 		mVote = id;
+		nextState();
 		
-	}
-	@Override
-	public JSONArray getCandidate(){
-		// TODO Auto-generated method stub
-		//LinkedList<HashMap> candidate = new LinkedList();
-		//HashMap map= new HashMap();
-		JSONObject map = new JSONObject();
-		JSONArray candidate = new JSONArray();
-		try {
-			map.put("paint", mStringBitmap);
-			map.put("id", 5);
-			candidate.put(map);
-			map= new JSONObject();
-			map.put("paint", mStringBitmap);
-			map.put("id", 6);
-			candidate.put(map);
-			map= new JSONObject();
-			map.put("paint", mStringBitmap);
-			map.put("id", 7);
-			candidate.put(map);
-			map= new JSONObject();
-			map.put("paint", mStringBitmap);
-			map.put("id", 8);
-			candidate.put(map);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return candidate;
 	}
 	@Override
 	public void sendProfile(Bitmap bitmap) {
 		mStringProfileBitmap = Helper.getStringFromBitmap(bitmap);
+		nextState();
 	}
 	@Override
 	public void sendPaint(Bitmap bitmap) {
 		// TODO Auto-generated method stub
 		mStringBitmap = Helper.getStringFromBitmap(bitmap);
+		nextState();
 	}
 	public void setProcess(JSONArray processes){
 		mProcesses = processes;
 	}
-	@Override
-	public JSONObject getState(){
-		try {
-			JSONObject result = mProcesses.getJSONObject(mIndex);
-			mIndex ++;
-			return result;
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
-    boolean[][] isPaintFake =
-    	{
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, true, false, false, false, false},
-    		{false, false, false, true, false, false, false, false},
-    		{false, false, false, true, false, false, true, false},
-    		{false, false, false, true, false, true, true, false},
-    		{true, false, false, true, false, true, true, false},
-    		{true, false, false, true, false, true, true, false},
-    		{true, false, false, true, false, true, true, false},
-    		{true, true, false, true, false, true, true, false},
-    		{true, true, false, true, false, true, true, false},
-    		{true, true, false, true, true, true, true, false},
-    		{true, true, true, true, true, true, true, false},
-    		{true, true, true, true, true, true, true, true},
-    	};
-    boolean[][] _isPaintFake =
-    	{
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{false, false, false, false, false, false, false, false},
-    		{true, false, false, false, false, false, false, false},
-    		{true, false, false, false, false, false, false, false},
-    		{true, true, false, false, false, false, false, false},
-    		{true, true, true, false, false, false, false, false},
-    		{true, true, true, true, false, false, false, false},
-    		{true, true, true, true, false, false, false, false},
-    		{true, true, true, true, false, false, false, false},
-    		{true, true, true, true, true, false, false, false},
-    		{true, true, true, true, true, true, false, false},
-    		{true, true, true, true, true, true, true, false},
-    		{true, true, true, true, true, true, true, true},
-    	};
-    int ctrIsPaintFake = 0;
-    int[][] voteFake =
-    	{
-    		{-1, -1, -1, -1, -1, -1, -1, -1},
-    		{-1, -1, -1, -1, -1, -1, -1, -1},
-    		{-1, -1, -1, -1, -1, -1, -1, -1},
-    		{-1, -1, -1, -1, -1, -1, -1, -1},
-    		{-1, -1, -1, -1, -1, -1, -1, -1},
-    		{-1, -1, -1, -1, -1, -1, -1, -1},
-    		{-1, -1, -1, 4, -1, 1, -1, -1},
-    		{-1, -1, 1, 4, -1, 1, -1, -1},
-    		{-1, -1, 1, 4, -1, 1, -1, -1},
-    		{-1, -1, 1, 4, -1, 1, 2, 3},
-    		{-1, -1, 1, 4, -1, 1, 2, 3},
-    		{1, -1, 1, 4, -1, 1, 2, 3},
-    		{1, 3, 1, 4, 1, 1, 2, 3}
-    	};
-    int ctrVoteFake = 0;
-    int[] voteResultFake = {1, 3, 2, 4, 3, 1, 4, 2};
 	@Override
 	public void StartVote() {
 		// TODO Auto-generated method stub
@@ -219,59 +207,103 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		
 	}
 	@Override
+	public void StartFinish() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
 	public void StartProfilingFinish(){
 		
+	}
+
+	@Override
+	public JSONObject getState(){
+		if (stateCount < stateCountBound){
+			stateCount ++;
+		} else {
+			nextState();
+		}
+		JSONObject result = null;
+		try {
+			result = mProcesses.getJSONObject(ctrState);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+	@Override
+	public JSONObject getTeamState(){
+		JSONObject m = new JSONObject();
+		try {
+			m.put("app", "main");
+			m.put("state", "stop");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return m;
+	}
+	@Override
+	public JSONObject getGroupingResult() {
+		// TODO Auto-generated method stub
+		JSONObject m = new JSONObject();
+		try {
+			m.put("id", mVote);
+			m.put("name", "jack");
+			m.put("photo", mStringProfileBitmap);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return m;
+	}
+	@Override
+	public JSONArray getCandidate(){
+		// TODO Auto-generated method stub
+		//LinkedList<HashMap> candidate = new LinkedList();
+		//HashMap map= new HashMap();
+		JSONObject map = new JSONObject();
+		JSONArray candidate = new JSONArray();
+		try {
+			for (int i = 4; i < 8; i++){
+				map = new JSONObject();
+				map.put("paint", mStringBitmap);
+				map.put("id", Integer.toString(i));
+				candidate.put(map);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return candidate;
 	}
 	@Override
 	public JSONArray getProfiled(){
 		// TODO Auto-generated method stub
-		boolean [] result = isPaintFake[ctrIsPaintFake];
-		if (ctrIsPaintFake < isPaintFake.length-1)
+		boolean [] result = isProfiledFake[ctrIsProfiledFake];
+		if (ctrIsProfiledFake < isProfiledFake.length-1)
 		{
-			ctrIsPaintFake++;
+			ctrIsProfiledFake++;
 		}
 		JSONArray players = new JSONArray();
 		try {
-		JSONObject m = new JSONObject();
-		m.put("id", 1);
-		m.put("group", "boy");
-		if (result[0]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 2);
-		m.put("group", "boy");
-		if (result[1]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 3);
-		m.put("group", "boy");
-		if (result[2]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 4);
-		m.put("group", "boy");
-		if (result[3]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 5);
-		m.put("group", "girl");
-		if (result[4]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 6);
-		m.put("group", "girl");
-		if (result[5]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 7);
-		m.put("group", "girl");
-		if (result[6]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 8);
-		m.put("group", "girl");
-		if (result[7]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
-		players.put(m);
+			JSONObject m;
+			for (int i = 0; i < 4 ; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "boy");
+				if (result[i]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+				players.put(m);		
+			}
+			for (int i = 4; i < 8; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "girl");
+				if (result[4]==true){m.put("state", "w_profiling");} else {m.put("state", "profiling");}
+				players.put(m);
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -288,56 +320,26 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		}
 		JSONArray players = new JSONArray();
 		try {
-		JSONObject m = new JSONObject();
-		m.put("id", 1);
-		m.put("group", "boy");
-		if (result[0]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 2);
-		m.put("group", "boy");
-		if (result[1]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 3);
-		m.put("group", "boy");
-		if (result[2]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 4);
-		m.put("group", "boy");
-		if (result[3]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 5);
-		m.put("group", "girl");
-		if (result[4]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 6);
-		m.put("group", "girl");
-		if (result[5]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 7);
-		m.put("group", "girl");
-		if (result[6]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 8);
-		m.put("group", "girl");
-		if (result[7]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
-		players.put(m);
+			JSONObject m;
+			for (int i = 0; i < 4 ; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "boy");
+				if (result[i]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
+				players.put(m);		
+			}
+			for (int i = 4; i < 8; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "girl");
+				if (result[4]==true){m.put("state", "w_painting");} else {m.put("state", "painting");}
+				players.put(m);
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return players;
-		
-	}
-	@Override
-	public void StartFinish() {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
@@ -350,46 +352,21 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		}
 		JSONArray players = new JSONArray();
 		try {
-		JSONObject m = new JSONObject();
-		m.put("id", 1);
-		m.put("group", "boy");
-		m.put("vote", result[0]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 2);
-		m.put("group", "boy");
-		m.put("vote", result[1]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 3);
-		m.put("group", "boy");
-		m.put("vote", result[2]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 4);
-		m.put("group", "boy");
-		m.put("vote", result[3]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 5);
-		m.put("group", "girl");
-		m.put("vote", result[4]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 6);
-		m.put("group", "girl");
-		m.put("vote", result[5]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 7);
-		m.put("group", "girl");
-		m.put("vote", result[6]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 8);
-		m.put("group", "girl");
-		m.put("vote", result[7]);
-		players.put(m);
+			JSONObject m;
+			for (int i = 0; i < 4 ; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "boy");
+				m.put("vote", result[i]);
+				players.put(m);		
+			}
+			for (int i = 4; i < 8; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "girl");
+				m.put("vote", result[i]);
+				players.put(m);
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -402,46 +379,21 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		int[] result =  voteResultFake;
 		JSONArray players = new JSONArray();
 		try {
-		JSONObject m = new JSONObject();
-		m.put("id", 1);
-		m.put("group", "boy");
-		m.put("result", result[0]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 2);
-		m.put("group", "boy");
-		m.put("result", result[1]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 3);
-		m.put("group", "boy");
-		m.put("result", result[2]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 4);
-		m.put("group", "boy");
-		m.put("result", result[3]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 5);
-		m.put("group", "girl");
-		m.put("result", result[4]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 6);
-		m.put("group", "girl");
-		m.put("result", result[5]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 7);
-		m.put("group", "girl");
-		m.put("result", result[6]);
-		players.put(m);
-		m = new JSONObject();
-		m.put("id", 8);
-		m.put("group", "girl");
-		m.put("result", result[7]);
-		players.put(m);
+			JSONObject m;
+			for (int i = 0; i < 4 ; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "boy");
+				m.put("result", result[i]);
+				players.put(m);		
+			}
+			for (int i = 4; i < 8; i++){
+				m = new JSONObject();
+				m.put("id", Integer.toString(i));
+				m.put("group", "girl");
+				m.put("result", result[i]);
+				players.put(m);
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -449,11 +401,11 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		return players;
 	}
 	@Override
-	public void setPlayer(int player) {
+	public void setPlayer(String player) {
 		// TODO Auto-generated method stub
 	}
 	@Override
-	public JSONObject getTeamId(String guid) {
+	public JSONObject getTeamByGUID(String guid) {
 		// TODO Auto-generated method stub
 		JSONObject m = new JSONObject();
 		try {
@@ -465,8 +417,20 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		return m;
 	}
 	@Override
-	public void setTeam(String tid) {
+	public void setTeam(String team) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public JSONObject getPlayerByGUID(String guid) {
+		JSONObject m = new JSONObject();
+		try {
+			m.put("id", "1");
+			m.put("tid", "1");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return m;
 	}
 }
