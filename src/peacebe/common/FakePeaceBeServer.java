@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 
-public class FakePeaceBeServer extends PeaceBeServer {
+public class FakePeaceBeServer implements IPeaceBeServer {
 	private JSONArray mProcesses;
 	private int mIndex=0;
 	private String mStringBitmap;
@@ -56,6 +56,7 @@ public class FakePeaceBeServer extends PeaceBeServer {
 			e.printStackTrace();
 		}
 	}
+	@Override
 	public JSONObject getTeamState(){
 		JSONObject m = new JSONObject();
 		try {
@@ -67,6 +68,7 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		}
 		return m;
 	}
+	@Override
 	public JSONObject getGroupingResult() {
 		// TODO Auto-generated method stub
 		JSONObject m = new JSONObject();
@@ -80,11 +82,13 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		}
 		return m;
 	}
+	@Override
 	public void sendVote(int id) {
 		// TODO Auto-generated method stub
 		mVote = id;
 		
 	}
+	@Override
 	public JSONArray getCandidate(){
 		// TODO Auto-generated method stub
 		//LinkedList<HashMap> candidate = new LinkedList();
@@ -113,9 +117,11 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		}
 		return candidate;
 	}
+	@Override
 	public void sendProfile(Bitmap bitmap) {
 		mStringProfileBitmap = Helper.getStringFromBitmap(bitmap);
 	}
+	@Override
 	public void sendPaint(Bitmap bitmap) {
 		// TODO Auto-generated method stub
 		mStringBitmap = Helper.getStringFromBitmap(bitmap);
@@ -123,6 +129,7 @@ public class FakePeaceBeServer extends PeaceBeServer {
 	public void setProcess(JSONArray processes){
 		mProcesses = processes;
 	}
+	@Override
 	public JSONObject getState(){
 		try {
 			JSONObject result = mProcesses.getJSONObject(mIndex);
@@ -192,24 +199,30 @@ public class FakePeaceBeServer extends PeaceBeServer {
     	};
     int ctrVoteFake = 0;
     int[] voteResultFake = {1, 3, 2, 4, 3, 1, 4, 2};
+	@Override
 	public void StartVote() {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
 	public void StartGrouping() {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
 	public void StartResult() {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
 	public void StartProfiling(){
 		
 	}
+	@Override
 	public void StartProfilingFinish(){
 		
 	}
+	@Override
 	public JSONArray getProfiled(){
 		// TODO Auto-generated method stub
 		boolean [] result = isPaintFake[ctrIsPaintFake];
@@ -265,6 +278,7 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		}
 		return players;
 	}
+	@Override
 	public JSONArray getPainted() {
 		// TODO Auto-generated method stub
 		boolean [] result = isPaintFake[ctrIsPaintFake];
@@ -321,10 +335,12 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		return players;
 		
 	}
+	@Override
 	public void StartFinish() {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
 	public JSONArray getVoted() {
 		// TODO Auto-generated method stub
 		int[] result = voteFake[ctrVoteFake];
@@ -380,6 +396,7 @@ public class FakePeaceBeServer extends PeaceBeServer {
 		}
 		return players;
 	}
+	@Override
 	public JSONArray getTotalResult() {
 		// TODO Auto-generated method stub
 		int[] result =  voteResultFake;
@@ -430,5 +447,26 @@ public class FakePeaceBeServer extends PeaceBeServer {
 			e.printStackTrace();
 		}
 		return players;
+	}
+	@Override
+	public void setPlayer(int player) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public JSONObject getTeamId(String guid) {
+		// TODO Auto-generated method stub
+		JSONObject m = new JSONObject();
+		try {
+			m.put("id", "1");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return m;
+	}
+	@Override
+	public void setTeam(String tid) {
+		// TODO Auto-generated method stub
+		
 	}
 }
