@@ -12,6 +12,7 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 	private String mVote;
 	private String mStringProfileBitmap;
 	private int stateCountBound = 10;
+	//private int stateCountBound = 1000;
 	private int stateCount = 0;
 	private int ctrState=0;
 	boolean[][] _isPaintFake =

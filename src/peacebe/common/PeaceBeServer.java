@@ -12,8 +12,8 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	private String mTeam = "1";
 	final private String mBaseURL = "http://175.41.156.14";	
 	public static IPeaceBeServer factoryGet(){
-		return new FakePeaceBeServer();
-		//return new PeaceBeServer();
+		//return new FakePeaceBeServer();
+		return new PeaceBeServer();
 	}
 	/* (non-Javadoc)
 	 * @see peacebe.common.IPeaceBeServer#setPlayer(int)

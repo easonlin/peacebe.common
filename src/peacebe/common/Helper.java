@@ -1,6 +1,13 @@
 package peacebe.common;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONObject;
@@ -8,6 +15,8 @@ import org.json.JSONObject;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.util.Base64;
 import android.util.Log;
 
@@ -16,6 +25,7 @@ public class Helper {
 		public String url;
 		public JSONObject content;
 	}
+
 	public static JSONObject httpGet(String url)  {
 		JSONObject result = null;
 		try {
