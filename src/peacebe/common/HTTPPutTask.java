@@ -25,7 +25,6 @@ public class HTTPPutTask extends AsyncTask<URLPair, Integer, JSONObject> {
 		URLPair urlPair = urls[0];
 		String url = urlPair.url;
 		Log.i("HTTP", "httpPut " + url);
-		JSONObject result = null;
 		JSONObject content = urlPair.content;
 		// TODO Auto-generated method stub			
 		HttpClient httpClient = new DefaultHttpClient();    
@@ -64,7 +63,7 @@ public class HTTPPutTask extends AsyncTask<URLPair, Integer, JSONObject> {
 				e.printStackTrace();
 				return null;
 			}		        	 		
-
+			JSONObject result = null;
 			try {
 				result = new JSONObject(strResult);
 			} catch (JSONException e) {

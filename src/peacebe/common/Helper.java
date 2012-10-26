@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
@@ -44,14 +45,21 @@ public class Helper {
 		URLPair urlPair = new URLPair();
 		urlPair.url = url;
 		urlPair.content = content;
-		try {
-			JSONObject obj = new HTTPPutTask().execute(urlPair).get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(int i=0;i<10;i++){
+			JSONObject obj=null;
+			try {
+				obj = new HTTPPutTask().execute(urlPair).get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (obj != null){
+				break;
+			}
+			SystemClock.sleep(5000);
 		}
 	}
 	public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
