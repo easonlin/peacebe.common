@@ -28,9 +28,12 @@ public class HTTPGetTask extends AsyncTask<String, Integer, JSONObject> {
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.i("NET","Failed to connect server");
+			//e.printStackTrace();
+			return null;
 		} 
     	if(httpResponse.getStatusLine().getStatusCode() == 200)  
     	{ 
@@ -40,9 +43,11 @@ public class HTTPGetTask extends AsyncTask<String, Integer, JSONObject> {
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return null;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return null;
 			}		        	 		
 
 			try {
@@ -50,12 +55,14 @@ public class HTTPGetTask extends AsyncTask<String, Integer, JSONObject> {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return new JSONObject();
 			}	     
+			return result;
     	} 
     	else 
     	{ 
-    		Log.d("http", "Error Response: " + httpResponse.getStatusLine().toString()); 
+    		Log.d("http", "Error Response: " + httpResponse.getStatusLine().toString());
+    		return null;
     	}
-    	return result;
      }
 }

@@ -45,7 +45,7 @@ public class Helper {
 		urlPair.url = url;
 		urlPair.content = content;
 		try {
-			int i = new HTTPPutTask().execute(urlPair).get();
+			JSONObject obj = new HTTPPutTask().execute(urlPair).get();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
