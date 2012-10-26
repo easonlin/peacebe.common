@@ -225,6 +225,9 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	public JSONArray getPainted() {
 		// TODO Auto-generated method stub
 		JSONObject result = Helper.httpGet(mBaseURL+"/app/grouping/team/"+mTeam+"/paint");
+		if (result == null){
+			return null;
+		}
 		JSONArray players = null;
 		try {
 			players = result.getJSONArray("players");
@@ -241,6 +244,9 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	public JSONArray getVoted() {
 		// TODO Auto-generated method stub
 		JSONObject result = Helper.httpGet(mBaseURL+"/app/grouping/team/"+mTeam+"/vote");
+		if(result==null){
+			return null;
+		}
 		JSONArray players = null;
 		try {
 			players = result.getJSONArray("players");
@@ -257,6 +263,9 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	public JSONArray getTotalResult() {
 		// TODO Auto-generated method stub
 		JSONObject result = Helper.httpGet(mBaseURL+"/app/grouping/team/"+mTeam+"/result");
+		if (result==null){
+			return null;
+		}
 		JSONArray players = null;
 		try {
 			players = result.getJSONArray("players");
