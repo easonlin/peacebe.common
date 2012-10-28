@@ -1,13 +1,6 @@
 package peacebe.common;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONObject;
@@ -15,8 +8,6 @@ import org.json.JSONObject;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
 import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
@@ -41,12 +32,12 @@ public class Helper {
 		return result;
 
 	}
-	public static void httpPut(String url, JSONObject content){
+	public static JSONObject httpPut(String url, JSONObject content){
 		URLPair urlPair = new URLPair();
 		urlPair.url = url;
 		urlPair.content = content;
-		for(int i=0;i<10;i++){
-			JSONObject obj=null;
+		JSONObject obj=null;
+		for(int i=0;i<3;i++){
 			try {
 				obj = new HTTPPutTask().execute(urlPair).get();
 			} catch (InterruptedException e) {
@@ -61,6 +52,7 @@ public class Helper {
 			}
 			SystemClock.sleep(5000);
 		}
+		return obj;
 	}
 	public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
 		int width = bm.getWidth();

@@ -36,13 +36,19 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	@Override
 	public JSONArray getCandidate() {
 		// TODO Auto-generated method stub
+		JSONObject obj = Helper.httpGet(mBaseURL+"/app/grouping/player/"+mPlayer+"/candidate");
+		JSONArray player = null;
+		if(obj == null){
+			return null;
+		}
 		try {
-			return Helper.httpGet(mBaseURL+"/app/grouping/player/"+mPlayer+"/candidate").getJSONArray("players");
+			player = obj.getJSONArray("players");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
+		return player;
 	}
 	/* (non-Javadoc)
 	 * @see peacebe.common.IPeaceBeServer#getGroupingResult()
@@ -104,7 +110,7 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	 * @see peacebe.common.IPeaceBeServer#StartProfiling()
 	 */
 	@Override
-	public void StartProfiling() {
+	public JSONObject StartProfiling() {
 		// TODO Auto-generated method stub
 		JSONObject content = new JSONObject();
         try {
@@ -115,7 +121,7 @@ public class PeaceBeServer extends FakePeaceBeServer {
 			e.printStackTrace();
 		}
 		Log.i("RUN", "startprofiling");
-        Helper.httpPut(mBaseURL+"/app/main/team/"+mTeam+"/state", content);
+        return Helper.httpPut(mBaseURL+"/app/main/team/"+mTeam+"/state", content);
 	}
 	/* (non-Javadoc)
 	 * @see peacebe.common.IPeaceBeServer#StartProfilingFinish()
@@ -141,6 +147,9 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	public JSONArray getProfiled() {
 		// TODO Auto-generated method stub
 		JSONObject result = Helper.httpGet(mBaseURL+"/app/profiling/team/"+mTeam+"/photo");
+		if (result == null){
+			return null;
+		}
 		JSONArray players = null;
 		try {
 			players = result.getJSONArray("players");
@@ -154,7 +163,7 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	 * @see peacebe.common.IPeaceBeServer#StartGrouping()
 	 */
 	@Override
-	public void StartGrouping() {
+	public JSONObject StartGrouping() {
 		// TODO Auto-generated method stub
 		JSONObject content = new JSONObject();
         try {
@@ -165,7 +174,7 @@ public class PeaceBeServer extends FakePeaceBeServer {
 			e.printStackTrace();
 		}
 		Log.i("RUN", "startgrouping");
-        Helper.httpPut(mBaseURL+"/app/main/team/"+mTeam+"/state", content);
+        return Helper.httpPut(mBaseURL+"/app/main/team/"+mTeam+"/state", content);
 	}
 	/* (non-Javadoc)
 	 * @see peacebe.common.IPeaceBeServer#StartVote()

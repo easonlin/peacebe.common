@@ -27,13 +27,13 @@ public interface IPeaceBeServer {
 
 	public abstract void sendVote(String id);
 
-	public abstract void StartProfiling();
+	public abstract JSONObject StartProfiling();
 
 	public abstract void StartProfilingFinish();
 
 	public abstract JSONArray getProfiled();
 
-	public abstract void StartGrouping();
+	public abstract JSONObject StartGrouping();
 
 	public abstract void StartVote();
 

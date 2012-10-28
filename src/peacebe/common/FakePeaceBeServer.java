@@ -194,9 +194,9 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		
 	}
 	@Override
-	public void StartGrouping() {
+	public JSONObject StartGrouping() {
 		// TODO Auto-generated method stub
-		
+		return new JSONObject();
 	}
 	@Override
 	public void StartResult() {
@@ -204,8 +204,8 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		
 	}
 	@Override
-	public void StartProfiling(){
-		
+	public JSONObject StartProfiling(){
+		return new JSONObject();
 	}
 	@Override
 	public void StartFinish() {
