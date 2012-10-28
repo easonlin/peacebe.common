@@ -78,7 +78,7 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	 * @see peacebe.common.IPeaceBeServer#sendProfile(android.graphics.Bitmap)
 	 */
 	@Override
-	public void sendProfile(Bitmap bitmap) {
+	public void sendProfilePhoto(Bitmap bitmap) {
 		// TODO Auto-generated method stub
 		String stringBitmap = Helper.getStringFromBitmap(bitmap);
 		JSONObject content = new JSONObject();
@@ -90,6 +90,34 @@ public class PeaceBeServer extends FakePeaceBeServer {
 		}
 		Helper.httpPut(mBaseURL+"/app/profiling/player/"+mPlayer+"/photo", content);
 	}
+	@Override
+	public void sendProfile(Bitmap photo, String male, String name){
+		JSONObject content = new JSONObject();
+		if(photo!=null){
+			try {
+				String stringPhoto = Helper.getStringFromBitmap(photo);
+				content.put("photo", stringPhoto);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			content.put("boy", male);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			content.put("name", name);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Helper.httpPut(mBaseURL+"/app/profiling/player/"+mPlayer+"/fill", content);
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see peacebe.common.IPeaceBeServer#sendVote(int)
 	 */
@@ -146,7 +174,9 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	@Override
 	public JSONArray getProfiled() {
 		// TODO Auto-generated method stub
-		JSONObject result = Helper.httpGet(mBaseURL+"/app/profiling/team/"+mTeam+"/photo");
+		///opt/trendmicro/sbin/saas_sd_ds_app_cli.py -s ec2-175-41-156-14.ap-southeast-1.compute.amazonaws.com \
+		//-i /app/profiling/team/$COMMANDERID/player -m GET
+		JSONObject result = Helper.httpGet(mBaseURL+"/app/profiling/team/"+mTeam+"/player");
 		if (result == null){
 			return null;
 		}
@@ -296,5 +326,77 @@ public class PeaceBeServer extends FakePeaceBeServer {
 	public void setTeam(String team) {
 		// TODO Auto-generated method stub
 		mTeam = team;
+	}
+	@Override
+	public void sendProfileVerifyOk(String id) {
+		// TODO Auto-generated method stub
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("pid", id);
+			obj.put("verify", "ok");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Helper.httpPut(mBaseURL+"/app/profiling/team/"+mTeam+"/verify", obj);
+	}
+
+	@Override
+	public void sendProfileVerifyDeny(String id) {
+		// TODO Auto-generated method stub
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("pid", id);
+			obj.put("verify", "deny");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Helper.httpPut(mBaseURL+"/app/profiling/team/"+mTeam+"/verify", obj);
+	}
+	@Override
+	public void sendJoin(String tid) {
+		// TODO Auto-generated method stub
+		JSONObject content = new JSONObject();
+		try {
+			content.put("tid", tid);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Helper.httpPut(mBaseURL+"/app/profiling/player/"+mPlayer+"/join", content);
+	}
+	@Override
+	public JSONArray getOpenedTeams() {
+		// TODO Auto-generated method stub
+		JSONObject result = Helper.httpGet(mBaseURL+"/app/profiling/player/"+mPlayer+"/team");
+		if(result==null){
+			return null;
+		}
+		JSONArray teams = null;
+		try {
+			teams = result.getJSONArray("teams");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return teams;
+	}
+	@Override
+	public void registerPlayer() {
+		// TODO Auto-generated method stub
+		///opt/trendmicro/sbin/saas_sd_ds_app_cli.py -s ec2-175-41-156-14.ap-southeast-1.compute.amazonaws.com \
+		//-i /app/profiling/player/$PLAYERID/register -m PUT -c '{}' -o
+		JSONObject content = new JSONObject();
+		Helper.httpPut(mBaseURL+"/app/profiling/player/"+mPlayer+"/register", content);	
+	}
+
+	@Override
+	public void registerTeam() {
+		// TODO Auto-generated method stub
+		///opt/trendmicro/sbin/saas_sd_ds_app_cli.py -s ec2-175-41-156-14.ap-southeast-1.compute.amazonaws.com \
+		//-i /app/profiling/team/$COMMANDERID/register -m PUT -c '{}' -o
+		JSONObject content = new JSONObject();
+		Helper.httpPut(mBaseURL+"/app/profiling/team/"+mTeam+"/register", content);		
 	}
 }

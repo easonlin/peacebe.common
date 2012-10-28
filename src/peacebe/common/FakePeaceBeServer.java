@@ -175,7 +175,7 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 		
 	}
 	@Override
-	public void sendProfile(Bitmap bitmap) {
+	public void sendProfilePhoto(Bitmap bitmap) {
 		mStringProfileBitmap = Helper.getStringFromBitmap(bitmap);
 		nextState();
 	}
@@ -433,5 +433,47 @@ public class FakePeaceBeServer implements IPeaceBeServer {
 			e.printStackTrace();
 		}
 		return m;
+	}
+
+	@Override
+	public void sendProfileVerifyOk(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendProfileVerifyDeny(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void sendProfile(Bitmap photo, String male, String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendJoin(String tid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JSONArray getOpenedTeams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void registerPlayer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void registerTeam() {
+		// TODO Auto-generated method stub
+		
 	}
 }

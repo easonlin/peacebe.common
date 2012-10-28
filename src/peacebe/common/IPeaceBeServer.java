@@ -23,7 +23,9 @@ public interface IPeaceBeServer {
 
 	public abstract void sendPaint(Bitmap bitmap);
 
-	public abstract void sendProfile(Bitmap bitmap);
+	public abstract void sendProfilePhoto(Bitmap bitmap);
+	
+	public abstract void sendProfile(Bitmap photo, String male, String name);
 
 	public abstract void sendVote(String id);
 
@@ -48,5 +50,17 @@ public interface IPeaceBeServer {
 	public abstract JSONArray getTotalResult();
 
 	public abstract JSONObject getTeamState();
+	
+	public abstract JSONArray getOpenedTeams();
+
+	public abstract void sendProfileVerifyOk(String id);
+	
+	public abstract void sendProfileVerifyDeny(String id);
+	
+	public abstract void sendJoin(String tid);
+	
+	public abstract void registerPlayer();
+	
+	public abstract void registerTeam();
 
 }
